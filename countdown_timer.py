@@ -13,7 +13,6 @@ class CountdownTimer:
             time.sleep(1)
             self.time_remaining = max(0, self.duration - int(time.time() - self.start_time))
         self.state = "finished"  # Update state when countdown finishes
-        print("Time's up!")
 
     def reset(self):
         self.time_remaining = self.duration
