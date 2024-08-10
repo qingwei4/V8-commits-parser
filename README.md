@@ -1,6 +1,6 @@
 # V8-commits-parser
 
-### notice 
+### note 
 the repo is still under development and not able to parse the commits yet.
 
 ### What is it?
