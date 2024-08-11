@@ -18,15 +18,15 @@ class CommitNotifier(commands.Cog):
             'promise', 'regexp'
         ]
 
-    @commands.command(name='DM')
-    async def dm_command(self, ctx, *args):
+    @commands.command(name='subscribe')
+    async def subscribe_command(self, ctx, *args):
         user_id = ctx.author.id
         if user_id not in self.subscriptions:
             self.subscriptions[user_id] = set()
 
         if not args:
             self.subscriptions[user_id] = set()  # Empty set means all commits
-            await ctx.send("You will be notified of all new commits.")
+            await ctx.send("You have subscribed to all new commits.")
             return
 
         keyword = args[0].lower()
@@ -35,14 +35,24 @@ class CommitNotifier(commands.Cog):
             return
 
         self.subscriptions[user_id].add(keyword)
-        await ctx.send(f"You will be notified when a commit message contains '{keyword}'.")
+        await ctx.send(f"You have subscribed to commits containing '{keyword}'.")
+
+    @commands.command(name='unsubscribe')
+    async def unsubscribe_command(self, ctx):
+        user_id = ctx.author.id
+        if user_id in self.subscriptions:
+            del self.subscriptions[user_id]
+            await ctx.send("You have been unsubscribed from all commit notifications.")
+        else:
+            await ctx.send("You were not subscribed to any commit notifications.")
 
     async def send_help_message(self, ctx):
         help_message = (
-            "Usage: !> DM [keyword]\n"
+            "Usage: !> subscribe [keyword]\n"
             "Valid keywords: " + ", ".join(self.valid_keywords) + "\n"
-            "Example: !> DM maglev\n"
-            "To receive all commits, use: !> DM"
+            "Example: !> subscribe maglev\n"
+            "To receive all commits, use: !> subscribe\n"
+            "To unsubscribe from all notifications, use: !> unsubscribe"
         )
         await ctx.send(help_message)
 
@@ -78,8 +88,8 @@ class CommitNotifier(commands.Cog):
 
     async def notify_subscribers(self, commit_info):
         for user_id, keywords in self.subscriptions.items():
-            if not keywords or any(keyword in commit_info.lower() for keyword in keywords):
-                user = self.bot.get_user(user_id)
+            if not keywords or any(keyword.lower() in commit_info.lower() for keyword in keywords):
+                user = await self.bot.fetch_user(user_id)
                 if user:
                     await user.send(f"New commit: {commit_info}")
 
