@@ -1,5 +1,5 @@
 # Use Ubuntu with the specified BuildID
-FROM ubuntu@sha256:0702430aef5fa3dda43986563e9ffcc47efbd75e
+FROM ubuntu:20.04
 
 # Set the working directory in the container
 WORKDIR /app
