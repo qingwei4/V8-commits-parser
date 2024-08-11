@@ -99,7 +99,9 @@ class MyBot(commands.Bot):
 
 def run_bot():
     bot = MyBot()
-    bot.run('YOUR_BOT_TOKEN_HERE')
+    with open('discord_token.txt', 'r') as token_file:
+        token = token_file.read().strip()
+    bot.run(token)
 
 if __name__ == '__main__':
     run_bot()

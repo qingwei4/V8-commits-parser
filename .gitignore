@@ -1,3 +1,4 @@
 access_token
+discord_token
 *.pyc
 __pycache__/
