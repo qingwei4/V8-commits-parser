@@ -2,7 +2,8 @@
 
 ### note 
 The bot is under testing. If issues arise, please open an issue.
-
+the discord bot is not working as expected. 
+I will fix it in the future.
 
 ### What is it?
 A simple discord bot that will parse V8 commits and notify you.
